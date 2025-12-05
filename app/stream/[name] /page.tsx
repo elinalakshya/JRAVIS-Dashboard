@@ -10,14 +10,7 @@ export default function StreamPage({ params }: { params: { name: string } }) {
 
   useEffect(() => {
     async function load() {
-      let token = null;
-
-      // FIX: localStorage only runs in browser
-      if (typeof window !== "undefined") {
-        token = localStorage.getItem("token");
-      }
-
-      const res = await apiGet(`/api/realtime/stream/${name}`, token);
+      const res = await apiGet(`/api/realtime/stream/${name}`);
       setStreamData(res);
     }
 
