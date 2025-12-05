@@ -3,7 +3,14 @@
 @tailwind utilities;
 
 body {
-  background: #f5f5f5;
-  color: #222;
-  font-family: sans-serif;
+  @apply bg-black text-white min-h-screen;
+}
+
+/* GOLDEN GLOW */
+.glow-gold {
+  text-shadow: 0 0 10px rgba(255, 215, 0, .6), 0 0 20px rgba(255, 215, 0, .4);
+}
+
+.logo-glow {
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, .45));
 }
