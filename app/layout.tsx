@@ -1,17 +1,12 @@
-// app/layout.tsx
-import "./globals.css";
-
 export const metadata = {
-  title: "JRAVIS Dashboard",
-  description: "Mission 2040 Automation Control Center",
+  title: "Lakshya 2040",
+  description: "JRAVIS Dashboard — Mission 2040",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-gray-100 text-gray-800">
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
