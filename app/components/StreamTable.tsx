@@ -1,36 +1,39 @@
-// app/components/StreamTable.tsx
-export interface Stream {
-  name: string;
-  status: string;
-  lastRun: string;
-}
-
-export default function StreamTable({ streams }: { streams: Stream[] }) {
+export default function StreamTable({ streams }) {
   return (
-    <table className="w-full text-left bg-white rounded-xl shadow-sm border">
-      <thead className="bg-gray-100">
-        <tr>
-          <th className="p-3 font-medium text-gray-700">Stream</th>
-          <th className="p-3 font-medium text-gray-700">Status</th>
-          <th className="p-3 font-medium text-gray-700">Last Run</th>
-        </tr>
-      </thead>
+    <div className="mt-8 bg-neutral-900 p-5 rounded-xl border border-neutral-800">
+      <h2 className="text-lg font-bold glow-gold">Active Streams</h2>
 
-      <tbody>
-        {streams.map((s, i) => (
-          <tr key={i} className="border-b">
-            <td className="p-3">{s.name}</td>
-            <td
-              className={`p-3 font-semibold ${
-                s.status === "OK" ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              {s.status}
-            </td>
-            <td className="p-3 text-gray-500">{s.lastRun}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+      <div className="overflow-x-auto mt-4">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="text-neutral-400 border-b border-neutral-800">
+              <th className="p-2">Stream</th>
+              <th className="p-2">Status</th>
+              <th className="p-2">Income</th>
+              <th className="p-2">Health</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {streams?.map((s, idx) => (
+              <tr key={idx} className="border-b border-neutral-800">
+                <td className="p-2">{s.name}</td>
+                <td className="p-2 text-yellow-400">{s.status}</td>
+                <td className="p-2">₹{s.revenue}</td>
+                <td className="p-2">{s.health}%</td>
+              </tr>
+            ))}
+
+            {!streams?.length && (
+              <tr>
+                <td colSpan={4} className="text-neutral-500 p-3 text-center">
+                  No data yet…
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }
