@@ -1,33 +1,25 @@
-// app/components/PhaseTabs.tsx
 "use client";
 
 import { useState } from "react";
 
+const phases = ["Phase 1", "Phase 2", "Phase 3", "Phase 4", "Phase 5"];
+
 export default function PhaseTabs() {
   const [active, setActive] = useState("Phase 1");
 
-  const tabs = ["Phase 1", "Phase 2", "Phase 3"];
-
   return (
-    <div className="flex gap-3 mb-4">
-      {tabs.map((t) => (
+    <div className="flex gap-3 overflow-x-auto no-scrollbar">
+      {phases.map((p) => (
         <button
-          key={t}
-          onClick={() => setActive(t)}
-          className={`px-4 py-2 rounded-lg text-sm font-medium 
-            ${
-              active === t
-                ? "bg-black text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-            }`}
+          key={p}
+          onClick={() => setActive(p)}
+          className={`px-4 py-2 rounded-lg border 
+            ${active === p ? "border-yellow-400 text-yellow-400" : "border-neutral-700 text-neutral-400"}
+            hover:border-yellow-500 hover:text-yellow-500 transition`}
         >
-          {t}
+          {p}
         </button>
       ))}
-
-      <div className="ml-4 text-sm text-gray-600 self-center">
-        Active: {active}
-      </div>
     </div>
   );
 }
