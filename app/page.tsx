@@ -1,20 +1,21 @@
 "use client";
 
 import useSWR from "swr";
-import Protected from "../../protected";
-import { apiGet } from "../../../lib/api";
+import Protected from "./protected";
+import { apiGet } from "../lib/api";
 
-import Header from "../../components/Header";
-import RevenueChart from "../../components/RevenueChart";
-import StreamTable from "../../components/StreamTable";
-import BrainStatus from "../../components/BrainStatus";
-import PhaseTabs from "../../components/PhaseTabs";
+// Components
+import Header from "./components/Header";
+import RevenueChart from "./components/RevenueChart";
+import StreamTable from "./components/StreamTable";
+import BrainStatus from "./components/BrainStatus";
+import PhaseTabs from "./components/PhaseTabs";
 
 const fetcher = (url: string) => apiGet(url);
 
 export default function Dashboard() {
   const { data } = useSWR("/api/realtime/dashboard", fetcher, {
-    refreshInterval: 3000
+    refreshInterval: 3000,
   });
 
   return (
