@@ -1,63 +1,35 @@
 "use client";
 
 import useSWR from "swr";
-import BrainStatus from "./components/BrainStatus";
-import IncomeWidget from "./components/IncomeWidget";
-import PhaseTabs from "./components/PhaseTabs";
+import Protected from "./protected";
+import { apiGet } from "../lib/api";
+import Header from "./components/Header";
+import RevenueChart from "./components/RevenueChart";
 import StreamTable from "./components/StreamTable";
-import LogFeed from "./components/LogFeed";
-import { fetcher } from "../lib/fetcher";
+import BrainStatus from "./components/BrainStatus";
+import PhaseTabs from "./components/PhaseTabs";
 
-export default function DashboardPage() {
-  // Auto-refresh every 5 seconds
-  const { data: streams } = useSWR(
-    "https://jravis-backend.onrender.com/api/streams",
-    fetcher,
-    { refreshInterval: 5000 }
-  );
+const fetcher = (url: string) => apiGet(url);
 
-  const { data: logs } = useSWR(
-    "https://jravis-backend.onrender.com/api/logs",
-    fetcher,
-    { refreshInterval: 5000 }
-  );
-
-  const { data: earnings } = useSWR(
-    "https://jravis-backend.onrender.com/api/earnings",
-    fetcher,
-    { refreshInterval: 5000 }
-  );
+export default function Dashboard() {
+  const { data } = useSWR("/api/realtime/dashboard", fetcher, {
+    refreshInterval: 3000,
+  });
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      {/* TOP BAR */}
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">JRAVIS Control Center</h1>
-        <p className="text-gray-600">
-          Mission 2040 — Fully Automated Income Systems
-        </p>
-      </header>
+    <Protected>
+      <Header />
 
-      {/* PHASE SELECTOR */}
-      <PhaseTabs />
+      <div className="p-6">
+        <PhaseTabs />
 
-      {/* SYSTEM + INCOME */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-        <BrainStatus status={streams ? "online" : "loading"} />
-        <IncomeWidget amount={earnings?.total || 0} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <RevenueChart data={data?.revenue_history || []} />
+          <BrainStatus status={data?.brain_status} />
+        </div>
+
+        <StreamTable streams={data?.streams || []} />
       </div>
-
-      {/* STREAMS TABLE */}
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-3">All Income Streams</h2>
-        <StreamTable streams={streams || []} />
-      </div>
-
-      {/* LOG FEED */}
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-3">JRAVIS Activity Logs</h2>
-        <LogFeed logs={logs || []} />
-      </div>
-    </div>
+    </Protected>
   );
 }
