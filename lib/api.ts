@@ -1,14 +1,19 @@
-// lib/api.ts
-import axios from "axios";
-
-const API_URL = "https://jravis-backend.onrender.com/api";
-const API_KEY = process.env.NEXT_PUBLIC_JRAVIS_API_KEY;
+export async function apiPost(path: string, body: any) {
+  return fetch(`${process.env.NEXT_PUBLIC_BACKEND}${path}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      token: localStorage.getItem("session") ?? ""
+    },
+    body: JSON.stringify(body),
+  }).then(res => res.json());
+}
 
 export async function apiGet(path: string) {
-  const res = await axios.get(`${API_URL}${path}`, {
+  return fetch(`${process.env.NEXT_PUBLIC_BACKEND}${path}`, {
+    method: "GET",
     headers: {
-      "x-api-key": API_KEY!,
+      token: localStorage.getItem("session") ?? ""
     },
-  });
-  return res.data;
+  }).then(res => res.json());
 }
